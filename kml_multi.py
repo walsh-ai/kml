@@ -4,6 +4,7 @@ from lxml import etree
 from shapely.geometry import Polygon
 from shapely.geometry import MultiPolygon
 from shapely import to_geojson
+import json 
 
 def kml_to_geojson(kml_file):
     # Parse the kml file 
@@ -55,17 +56,19 @@ def kml_to_geojson(kml_file):
         }
         features.append(feature)
 
-        # Remove duplicates
-        seen = set()
-        unique_features = []
-        for feature in features:
-            identifier = json.dumps(feature, sort_keys=True)
+    # Remove duplicates
+    seen = set()
+    unique_features = []
+    for feature in features:
+        identifier = json.dumps(feature, sort_keys=True)
 
-            if identifier not in seen:
-                seen.add(identifier)
-                unique_features.append(feature)
+        if identifier not in seen:
+            seen.add(identifier)
+            unique_features.append(feature)
+        else:
+            print(f"*** Duplicate Found: {feature['properties']['name']}")
 
-        print(f"Removed {len(features) - len(unique_features)} duplicate features")
+    print(f"Removed {len(features) - len(unique_features)} duplicate features")
 
     geojson = {
         'type': 'FeatureCollection',

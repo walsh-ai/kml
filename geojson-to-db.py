@@ -20,7 +20,6 @@ def create_geojson_db(gdf, dbpath = "postcodes.db"):
             # Iterate the features in the geopandas df
             for idx, row in gdf.iterrows():
                 name = row.get("name")
-                print(name)
                 geometry_json = row.geometry.__geo_interface__
                 
                 # Construct the name and geometry into a geojson feature 
