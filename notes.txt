@@ -7,6 +7,53 @@
     keyed on the name property (capitalised postcode district string)
 
 
+Prompts from chat gpt asking about how to build a full next-js interactive map app:
+
+I have a gesojson file containing features each of which has a name property and either a polygon or multi-polygon. 
+I would like to read this file into python with geopandas, and then iterate over all of the features, extracting the name
+
+How do I get the json itself, for the geometry?
+
+How can I put each geometry into it's own feature collection?
+
+Does geopandas store the raw json for each feature?
+
+How can I make a new geojson feature collection and add the geometry and name to it
+
+Can you make me a next js project that will host a google maps with the javascript api on a simple landing page, 
+on which I can type in a name which will fetch the geojson from a sqllite database and display the geojson on the google map
+
+The geojson draws a polygon on the map. Can you style the polygon when it is displayed to be pink, 
+with a transparency of 0.25, and a thin opaque outline 
+
+Can you make it so that you can enter a list of names, separated by commas, 
+and then the geojson polygons associated with each name entered will all be displayed 
+
+The names in the database are UK postcode district, in the form CM21, or BS2, for example. Can you add some basic input validation and 
+cleaning too, in case someone enters extra spaces, lowercase, or an invalid postcode format
+
+Can you put all this together into the next js app project?
+
+yes please, just the structure and show me the code 
+
+Hey, this is great. Can you add any styling with tailwind to make the app display well on mobile devices?
+
+Can you also make it have a simple sign-up and login page that blocks access to the map feature, 
+with a mongo-db database and authentication taking email and password 
+
+Can we do a more advanced password and authentication, such as with oauth
+
+Are there any changes you need to make to make this app ready to deploy online such as on vercel server?
+
+One last thing, can you add to the interface with the postcodes and the map viewing, 
+a feature that lets people select the colour and opacity with which their polygons will be displayed 
+
+After selecting colour change, there needs to be a button to refresh the map or request the postcodes names again with 
+the new colour. Is that already there or do we need to add it?
+
+
+
+
 import geopandas as gpd
 from lxml import etree
 from shapely.geometry import Polygon

@@ -55,14 +55,29 @@ def kml_to_geojson(kml_file):
         }
         features.append(feature)
 
+        # Remove duplicates
+        seen = set()
+        unique_features = []
+        for feature in features:
+            identifier = json.dumps(feature, sort_keys=True)
+
+            if identifier not in seen:
+                seen.add(identifier)
+                unique_features.append(feature)
+
+        print(f"Removed {len(features) - len(unique_features)} duplicate features")
+
     geojson = {
         'type': 'FeatureCollection',
-        'features': features
+        'features': unique_features
     }
     return geojson
 
 kml_file = 'PostcodeDistricts.kml'
 geojson = kml_to_geojson(kml_file)
+
+# Now remove duplicates 
+
 
 num_features = len(geojson['features'])
 print(f'There are {num_features} features in the GeoJSON FeatureCollection.')
