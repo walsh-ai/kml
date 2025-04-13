@@ -1,0 +1,77 @@
+- The first attempt at writing to file and databse was failed, because some postcode polygons have 
+    multiple coordinates lists for separate regions
+- The kml_multi.py will handle the mutli-polygon shapes such as postcode district BS2, which previously was duplicated
+    in the geojson with the two separate coordinate regions 
+        - The PostcodeDistrictsPolygons_multi has the correct format from kml_multi.py
+- The 'geojson-to-db.py' will have a script for putting the PostcodeDistrictsPolygons_multi into a sqlite database
+    keyed on the name property (capitalised postcode district string)
+
+
+import geopandas as gpd
+from lxml import etree
+from shapely.geometry import Polygon
+
+def kml_to_geojson(kml_file):
+    # Parse the KML file
+    tree = etree.parse(kml_file)
+    root = tree.getroot()
+
+    # Define the namespaces
+    ns = {'kml': 'http://www.opengis.net/kml/2.2'}
+
+    # Find all the <Placemark> elements in the KML file
+    placemarks = root.xpath('//kml:Placemark', namespaces=ns)
+
+    # Create an empty list to hold the polygons
+    features = []
+
+    for placemark in placemarks:
+        # Get the name and description of the placemark
+        name = placemark.find('kml:name', namespaces=ns).text
+        description = placemark.find('kml:description', namespaces=ns).text if placemark.find('kml:description', namespaces=ns) else ""
+
+        # Get the polygon geometry (coordinates)
+        polygon_coords = placemark.xpath('.//kml:Polygon//kml:coordinates', namespaces=ns)
+        
+        for coords in polygon_coords:
+            coords_text = coords.text.strip()
+            # Convert coordinates to a list of tuples
+            coord_list = []
+            for coord in coords_text.split():
+                lon, lat, _ = coord.split(',')  # Ignoring the altitude
+                coord_list.append((float(lon), float(lat)))
+
+            # Create a polygon object from the coordinates
+            polygon = Polygon(coord_list)
+            feature = {
+                'type': 'Feature',
+                'geometry': polygon.__geo_interface__,
+                'properties': {
+                    'name': name,
+                    'description': description
+                }
+            }
+            features.append(feature)
+
+    # Create a GeoDataFrame
+    geojson = {
+        'type': 'FeatureCollection',
+        'features': features
+    }
+
+    return geojson
+
+# Convert the KML file to GeoJSON
+kml_file = 'your_kml_file.kml'
+geojson = kml_to_geojson(kml_file)
+
+# Optionally, save the GeoJSON to a file
+import json
+with open('output.geojson', 'w') as f:
+    json.dump(geojson, f, indent=4)
+
+print("Conversion Complete")
+
+
+---
+
