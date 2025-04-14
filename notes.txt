@@ -7,6 +7,9 @@
     keyed on the name property (capitalised postcode district string)
 
 
+Next, I would write a script to go through every postcode in the multigeojson file, and check that they are 
+all present in the database.
+
 Prompts from chat gpt asking about how to build a full next-js interactive map app:
 
 I have a gesojson file containing features each of which has a name property and either a polygon or multi-polygon. 
