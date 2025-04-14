@@ -46,5 +46,3 @@ else:
 
 if verify_every_postcode():
     print("*** EVERY POSTCODE IS PRESENT ***")
-
-
