@@ -50,4 +50,4 @@ path = "PostcodeDistrictsPolygons_multi.geojson"
 file = open(path)
 df = gpd.read_file(file)
 
-create_geojson_db(df, "postcodes_multi.db")
+create_geojson_db(df, "postcode_geojson.db")

@@ -44,5 +44,5 @@ if selectedRow:
 else:
     print("No data returned.")
 
-if verify_every_postcode():
+if verify_every_postcode("postcode_geojson.db"):
     print("*** EVERY POSTCODE IS PRESENT ***")
